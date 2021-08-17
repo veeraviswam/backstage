@@ -23,6 +23,7 @@ import { v4 as uuid } from 'uuid';
 import type { Logger } from 'winston';
 import { Transaction } from '../../database';
 import { DeferredEntity } from '../processing/types';
+import { initDatabaseMetrics } from './metrics';
 import {
   DbRefreshStateReferencesRow,
   DbRefreshStateRow,
@@ -50,7 +51,9 @@ export class DefaultProcessingDatabase implements ProcessingDatabase {
       logger: Logger;
       refreshIntervalSeconds: number;
     },
-  ) {}
+  ) {
+    initDatabaseMetrics(options.database);
+  }
 
   async updateProcessedEntity(
     txOpaque: Transaction,
